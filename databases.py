@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3
 
 # Define the file path to the Excel file
-excel_file = '/Users/mehakkapur/Desktop/DataBases.xlsx'
+excel_file = 'DataBases.xlsx'
 
 # Read all sheets from the Excel file into a dictionary of DataFrames
 dfs = pd.read_excel(excel_file, sheet_name=None)

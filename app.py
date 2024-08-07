@@ -17,7 +17,7 @@ headers = {
 # Initialize conversation history
 if "conversation_history" not in st.session_state:
     st.session_state["conversation_history"] = [
-        {"role": "system", "content": "There is a database named DataBases.xlsx, which contains four tables: \n\nCatlogue (Item ID, item, In-Stock, Price, Colour, Sizes), \nOrder (Order Number, item, Size, Quantity, Price, Status), \nReturns (Order id, Item id, Tracking number, Status), \nShopping Cart (item id, item, quantity, price).\n\nYour task is to convert the user's input into an SQL query that accesses this database. For example, if the user asks, \"I want to know the status of my order,\" you should respond with an SQL query like SELECT Status FROM \"Order\" WHERE \"Order Number\" = 121348;. Ensure the query starts with SELECT and includes no extra quotations or words.\n\nIf the user's question doesn't require database access, respond warmly and kindly as a customer service chatbot for a clothing store would."
+        {"role": "system", "content": "Whenever you need to print an SQL query, ensure that you only print the query itself without any additional text, so it can be directly fed back into the code.There is a database named DataBases.xlsx, which contains four tables: Catalogue (item_id, item, quantity, price, colour, sizes), Order (order_id, item, size, quantity, price, status), Returns (order_id, item_id, tracking_number, status), Cart (item_id, item, quantity, price). Your task is to understand the user's request and ensure all necessary information is obtained before converting it into an SQL query that accesses this database. For example, if the user asks about the status of their order, first ask for the order ID. Only after receiving the order ID should you respond with an SQL query like SELECT status FROM \"Order\" WHERE order_id = 121348;. Ensure the query starts with SELECT and includes no extra quotations or words. If the user's question doesn't require database access, respond warmly and kindly as a customer service chatbot for a clothing store would. It is crucial to wait for all the necessary information from the user before generating an SQL query to avoid errors."
 }
     ]
  
@@ -26,7 +26,7 @@ def get_response(user_input,context=None):
     st.session_state["conversation_history"].append({"role": "user", "content": user_input})
    
     # Define the payload with the updated conversation history
-    payload = {
+    payload = { 
         "model": "gpt-4o-mini",
         "messages": st.session_state["conversation_history"]
     }
